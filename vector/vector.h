@@ -8,6 +8,30 @@ namespace my {
     public:
         typedef T* iterator;
         typedef const T* const_iterator;
+
+        vector() = default;
+        vector(int n, const T x = T()) {
+            reserve(n);
+            while(n--) {
+                push_back(x);
+            }
+        }
+
+        template<class contain_iterator>
+        vector(contain_iterator first, contain_iterator last) {
+            while(first != last) {
+                push_back(*first);
+                first++;
+            }
+        }
+
+        vector(const vector<T>& v) {
+            reserve(v.size());
+            for(auto& e : v) {
+                push_back(e);
+            }
+        }
+
         size_t size() const {
             return _finish - _start;
         }
@@ -15,13 +39,19 @@ namespace my {
         size_t capacity() const {
             return _end_of_storage - _start;
         }
-        
+
+        bool empty() const {
+            return _start == _finish;
+        }
+
         void reserve(int s) {
             assert(s > 0);
             if(s > capacity()) {
                 int old_size = size();
                 iterator tmp = new T[s];
-                if(_start) memcpy(tmp, _start, old_size * sizeof(T));
+                if(_start) {
+                    for(int i = 0; i < old_size; i++) tmp[i] = _start[i];
+                }
                 delete[] _start;
                 _start = tmp;
                 _finish = tmp + old_size;
@@ -105,7 +135,8 @@ namespace my {
         }
 
         ~vector() {
-            delete[] _start;
+            if(_start) delete[] _start;
+            _start = _finish = _end_of_storage = nullptr;
         }
 
     private:

@@ -64,10 +64,11 @@
 // }
 
 #include"vector.h"
+#include<list>
 using namespace my;
 
 void test1() {
-    vector<int>v;
+    vector<int> v{};
     v.push_back(1);
     v.push_back(2);
     v.push_back(3);   
@@ -86,7 +87,7 @@ void test1() {
 }
 
 void test2() {
-    vector<int>v;
+    vector<int> v{};
     v.push_back(1);
     v.push_back(2);
     v.push_back(3);   
@@ -111,6 +112,13 @@ void test2() {
     v.print();
 }
 
+void test3() {
+    vector<int> v1{10, 1};
+    v1.print();
+    
+    
+}
+
 int main() {
     // vector<int>v;
     // v.push_back(1);
@@ -122,6 +130,6 @@ int main() {
     // v.push_back(1);
     // v.push_back(1);
     // std::cout << v[0] << std::endl;
-    test2();
+    test3();
     return 0;
 }
