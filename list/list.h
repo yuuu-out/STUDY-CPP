@@ -34,7 +34,7 @@ namespace my {
         }
 
         Ptr operator-> () {
-            return &_node->_data;
+            return &(_node->_data);
         }
 
         self& operator++() {
@@ -47,11 +47,11 @@ namespace my {
             return *this;
         }
 
-        bool operator!=(self& it) {
+        bool operator!=(const self& it) const {
             return this->_node != it._node;
         }
 
-        bool  operator==(self& it) {
+        bool  operator==(const self& it) const {
             return this->_node == it._node;
         }
 
@@ -109,13 +109,26 @@ namespace my {
             _size = 0;
         }
 
+        void empty_init() {
+            _head = new node;
+            _head->_next = _head;
+            _head->_prev = _head;
+            _size = 0;
+        }
+
+        list(list<T>& lt) {
+            empty_init();
+            for(auto& e : lt) {
+                push_back(e);
+            }
+        }
 
         iterator begin() {
             return _head->_next;
         }
 
         iterator end() {
-            return _head->_prev;
+            return _head;
         }
 
         const_iterator const_begin() {
@@ -123,8 +136,10 @@ namespace my {
         }
 
         const_iterator const_end() {
-            return _head->_prev;
+            return _head;
         }
+
+
 
         void push_back(T x) {
             node* newnode = new node(x);
@@ -139,19 +154,47 @@ namespace my {
             ++_size;
         }
 
-        
-
         void print_container() {
             for(auto& e : *this) {
                 std::cout << e << ' ';
             }
         }
 
-        void clear() {
-            
+        iterator erase(iterator it) {
+            node* prev = (it._node)->_prev;
+            node* next = (it._node)->_next;
+            prev->_next = next;
+            next->_prev = prev;
+
+            delete it._node;
+            return next;
         }
 
-        
+        void insert(T x, iterator it) {
+            node* prev = (it._node)->_prev;
+
+            node* newnode = new node(x);
+            
+            newnode->_next = it._node;
+            newnode->_prev = prev;
+
+            prev->_next = newnode;
+            (it._node)->_prev = newnode;
+        }
+
+        void clear() {
+            auto it = begin();
+            while(it != end()) {
+                it = erase(it);
+            }
+            erase(it);
+        }
+
+        ~list() {
+            clear();
+            delete _head;
+            _head = nullptr;
+        }
 
     private:
         node* _head;
