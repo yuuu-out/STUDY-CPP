@@ -28,5 +28,10 @@ int main() {
     lt1.insert(6, it);
     lt1.insert(0, it);
     lt1.print_container();
+    std::cout << std::endl;
+    
+    list<int> lt2({2, 3, 1 ,65, 3535});
+    lt2.print_container();
+
     return 0;
 }

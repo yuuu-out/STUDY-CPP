@@ -123,6 +123,13 @@ namespace my {
             }
         }
 
+        list(std::initializer_list<T> il) {
+            empty_init();
+            for(auto& e : il) {
+                push_back(e);
+            }
+        }
+
         iterator begin() {
             return _head->_next;
         }
